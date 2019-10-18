@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "995117894306",
+    "firebase_url": "https://auraapp-d137c.firebaseio.com",
+    "project_id": "auraapp-d137c",
+    "storage_bucket": "auraapp-d137c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995117894306:android:6b2ec9587a587333ce25fb",
+        "android_client_info": {
+          "package_name": "nodomain.freeyourgadget.gadgetbridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995117894306-2p20e4fnabkfonkk6j1ou63uc19iva7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nodomain.freeyourgadget.gadgetbridge",
+            "certificate_hash": "54583cb3ff42d57adb8c67356b56f9ac78ffaa5e"
+          }
+        },
+        {
+          "client_id": "995117894306-ghvfs2p5dqpi0aksog9mlad4kqe3npgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB28U8RvkjY7PtvMkbM1wLqGJSsH-wGuMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995117894306-ghvfs2p5dqpi0aksog9mlad4kqe3npgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
