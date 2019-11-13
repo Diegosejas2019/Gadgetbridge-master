@@ -130,6 +130,11 @@ public class RoidmiSupport extends AbstractSerialDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     protected GBDeviceIoThread createDeviceIOThread() {
         return new RoidmiIoThread(getDevice(), getContext(), (RoidmiProtocol) getDeviceProtocol(), RoidmiSupport.this, getBluetoothAdapter());
     }

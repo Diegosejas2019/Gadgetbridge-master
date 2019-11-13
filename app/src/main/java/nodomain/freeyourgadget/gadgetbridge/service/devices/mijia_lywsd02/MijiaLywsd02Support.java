@@ -290,4 +290,9 @@ public class MijiaLywsd02Support extends AbstractBTLEDeviceSupport {
     public void onSendWeather(WeatherSpec weatherSpec) {
 
     }
+
+    @Override
+    public void handleButtonEventNew() {
+
+    }
 }

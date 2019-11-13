@@ -299,4 +299,9 @@ public class VibratissimoSupport extends AbstractBTLEDeviceSupport {
     public void onSendWeather(WeatherSpec weatherSpec) {
 
     }
+
+    @Override
+    public void handleButtonEventNew() {
+
+    }
 }

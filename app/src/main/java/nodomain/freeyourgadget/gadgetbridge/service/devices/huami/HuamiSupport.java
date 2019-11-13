@@ -1161,9 +1161,59 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+        ///logMessageContent(value);
+
+        // If disabled we return from function immediately
+        Prefs prefs = GBApplication.getPrefs();
+        if (!prefs.getBoolean(MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE, false)) {
+            return;
+        }
+
+        int buttonPressMaxDelay = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_PRESS_MAX_DELAY, 2000);
+        int buttonActionDelay = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_ACTION_DELAY, 0);
+        int requiredButtonPressCount = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_PRESS_COUNT, 0);
+
+        if (requiredButtonPressCount > 0) {
+            long timeSinceLastPress = System.currentTimeMillis() - currentButtonPressTime;
+
+            if ((currentButtonPressTime == 0) || (timeSinceLastPress < buttonPressMaxDelay)) {
+                currentButtonPressCount++;
+            }
+            else {
+                currentButtonPressCount = 1;
+                currentButtonActionId = 0;
+            }
+
+            currentButtonPressTime = System.currentTimeMillis();
+            if (currentButtonPressCount == requiredButtonPressCount) {
+                currentButtonTimerActivationTime = currentButtonPressTime;
+                if (buttonActionDelay > 0) {
+                    LOG.info("Activating timer");
+                    final Timer buttonActionTimer = new Timer("Mi Band Button Action Timer");
+                    buttonActionTimer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runButtonAction();
+                            buttonActionTimer.cancel();
+                        }
+                    }, buttonActionDelay, buttonActionDelay);
+                }
+                else {
+                    LOG.info("Activating button action");
+                    runButtonAction();
+                }
+                currentButtonActionId++;
+                currentButtonPressCount = 0;
+            }
+        }
+    }
+
+    @Override
     public boolean onCharacteristicChanged(BluetoothGatt gatt,
                                            BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
+
 
         UUID characteristicUUID = characteristic.getUuid();
         if (HuamiService.UUID_CHARACTERISTIC_6_BATTERY_INFO.equals(characteristicUUID)) {
@@ -1510,6 +1560,9 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
                     break;
                 case HuamiConst.PREF_EXPOSE_HR_THIRDPARTY:
                     setExposeHRThridParty(builder);
+                    break;
+                case MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE:
+                    handleButtonEvent();
                     break;
             }
             builder.queue(getQueue());

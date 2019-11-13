@@ -53,6 +53,7 @@ import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PR
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MI2_INACTIVITY_WARNINGS_THRESHOLD;
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MI2_ROTATE_WRIST_TO_SWITCH_INFO;
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MIBAND_ADDRESS;
+import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE;
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MIBAND_RESERVE_ALARM_FOR_CALENDAR;
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_MIBAND_USE_HR_FOR_SLEEP_DETECTION;
 import static nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst.PREF_USER_ALIAS;
@@ -70,6 +71,8 @@ public class MiBandPreferencesActivity extends AbstractSettingsActivity {
 
         Prefs prefs = GBApplication.getPrefs();
         GBApplication.deviceService().onEnableHeartRateSleepSupport(true);
+        GBApplication.deviceService().handleButtonEventNew();
+
         final Preference enableHeartrateSleepSupport = findPreference(PREF_MIBAND_USE_HR_FOR_SLEEP_DETECTION);
         enableHeartrateSleepSupport.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -102,6 +105,19 @@ public class MiBandPreferencesActivity extends AbstractSettingsActivity {
             }
         });
 
+        final Preference alertButton = findPreference(PREF_MIBAND_BUTTON_ACTION_ENABLE);
+        alertButton.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newVal) {
+                invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        GBApplication.deviceService().onSendConfiguration(PREF_MIBAND_BUTTON_ACTION_ENABLE);
+                    }
+                });
+                return true;
+            }
+        });
 
         final Preference inactivityWarnings = findPreference(PREF_MI2_INACTIVITY_WARNINGS);
         inactivityWarnings.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

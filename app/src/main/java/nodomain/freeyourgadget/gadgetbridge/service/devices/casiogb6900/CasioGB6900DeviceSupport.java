@@ -750,6 +750,11 @@ public class CasioGB6900DeviceSupport extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public boolean onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
 
         if (!characteristic.getUuid().equals(CasioGB6900Constants.NAME_OF_APP_CHARACTERISTIC_UUID)) {

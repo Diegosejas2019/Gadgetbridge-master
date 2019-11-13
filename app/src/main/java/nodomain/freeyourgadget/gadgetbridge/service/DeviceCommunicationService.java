@@ -591,7 +591,7 @@ public class DeviceCommunicationService extends Service implements SharedPrefere
                 break;
             }
             case ACTION_TEST_NEW_FUNCTION: {
-                mDeviceSupport.onTestNewFunction();
+                mDeviceSupport.handleButtonEventNew();
                 break;
             }
             case ACTION_SEND_WEATHER: {

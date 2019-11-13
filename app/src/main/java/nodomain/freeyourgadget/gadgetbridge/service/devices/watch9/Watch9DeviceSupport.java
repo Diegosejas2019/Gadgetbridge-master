@@ -523,6 +523,11 @@ public class Watch9DeviceSupport extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public boolean onCharacteristicChanged(BluetoothGatt gatt,
                                            BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);

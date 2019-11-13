@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
@@ -45,6 +47,7 @@ import nodomain.freeyourgadget.gadgetbridge.database.DBHelper;
 import nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo;
 import nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventVersionInfo;
 import nodomain.freeyourgadget.gadgetbridge.devices.SampleProvider;
+import nodomain.freeyourgadget.gadgetbridge.devices.huami.HuamiService;
 import nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandConst;
 import nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandCoordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.miband.MiBandDateConverter;
@@ -130,6 +133,11 @@ public class MiBandSupport extends AbstractBTLEDeviceSupport {
     private RealtimeSamplesSupport realtimeSamplesSupport;
     private boolean alarmClockRining;
     private boolean alarmClockRinging;
+
+    private static int currentButtonActionId = 0;
+    private static int currentButtonPressCount = 0;
+    private static long currentButtonPressTime = 0;
+    private static long currentButtonTimerActivationTime = 0;
 
     public MiBandSupport() {
         super(LOG);
@@ -484,6 +492,79 @@ public class MiBandSupport extends AbstractBTLEDeviceSupport {
             });
         }
         return this;
+    }
+
+    public void handleButtonEvent() {
+        ///logMessageContent(value);
+
+        // If disabled we return from function immediately
+        Prefs prefs = GBApplication.getPrefs();
+        if (!prefs.getBoolean(MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE, false)) {
+            return;
+        }
+
+        int buttonPressMaxDelay = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_PRESS_MAX_DELAY, 2000);
+        int buttonActionDelay = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_ACTION_DELAY, 0);
+        int requiredButtonPressCount = prefs.getInt(MiBandConst.PREF_MIBAND_BUTTON_PRESS_COUNT, 0);
+
+        if (requiredButtonPressCount > 0) {
+            long timeSinceLastPress = System.currentTimeMillis() - currentButtonPressTime;
+
+            if ((currentButtonPressTime == 0) || (timeSinceLastPress < buttonPressMaxDelay)) {
+                currentButtonPressCount++;
+            }
+            else {
+                currentButtonPressCount = 1;
+                currentButtonActionId = 0;
+            }
+
+            currentButtonPressTime = System.currentTimeMillis();
+            if (currentButtonPressCount == requiredButtonPressCount) {
+                currentButtonTimerActivationTime = currentButtonPressTime;
+                if (buttonActionDelay > 0) {
+                    LOG.info("Activating timer");
+                    final Timer buttonActionTimer = new Timer("Mi Band Button Action Timer");
+                    buttonActionTimer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runButtonAction();
+                            buttonActionTimer.cancel();
+                        }
+                    }, buttonActionDelay, buttonActionDelay);
+                }
+                else {
+                    LOG.info("Activating button action");
+                    runButtonAction();
+                }
+                currentButtonActionId++;
+                currentButtonPressCount = 0;
+            }
+        }
+    }
+
+    public void runButtonAction() {
+        Prefs prefs = GBApplication.getPrefs();
+
+        if (currentButtonTimerActivationTime != currentButtonPressTime) {
+            return;
+        }
+
+        String requiredButtonPressMessage = prefs.getString(MiBandConst.PREF_MIBAND_BUTTON_PRESS_BROADCAST,
+                this.getContext().getString(R.string.mi2_prefs_button_press_broadcast_default_value));
+
+        Intent in = new Intent();
+        in.setAction(requiredButtonPressMessage);
+        in.putExtra("button_id", currentButtonActionId);
+        LOG.info("Sending " + requiredButtonPressMessage + " with button_id " + currentButtonActionId);
+        this.getContext().getApplicationContext().sendBroadcast(in);
+        if (prefs.getBoolean(MiBandConst.PREF_MIBAND_BUTTON_ACTION_VIBRATE, false)) {
+            Toast.makeText(this.getContext(),"test",Toast.LENGTH_LONG).show();
+        }
+
+        currentButtonActionId = 0;
+
+        currentButtonPressCount = 0;
+        currentButtonPressTime = System.currentTimeMillis();
     }
 
     private void performDefaultNotification(String task, SimpleNotification simpleNotification, short repeat, BtLEAction extraAction) {
@@ -1280,6 +1361,11 @@ public class MiBandSupport extends AbstractBTLEDeviceSupport {
     @Override
     public void onSendWeather(WeatherSpec weatherSpec) {
 
+    }
+
+    @Override
+    public void handleButtonEventNew() {
+        String algo = "";
     }
 
     /**

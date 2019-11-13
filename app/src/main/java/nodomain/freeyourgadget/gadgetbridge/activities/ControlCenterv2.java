@@ -196,14 +196,15 @@ public class ControlCenterv2 extends AppCompatActivity
             Intent enableIntent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
             startActivity(enableIntent);
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkAndRequestPermissions();
         }
 
-        ChangeLog cl = createChangeLog();
+      /*  ChangeLog cl = createChangeLog();
         if (cl.isFirstRun()) {
             cl.getLogDialog().show();
-        }
+        }*/
 
         GBApplication.deviceService().start();
 
@@ -265,7 +266,7 @@ public class ControlCenterv2 extends AppCompatActivity
                 startActivity(debugIntent);
                 return true;
             case R.id.action_db_management:
-                Intent dbIntent = new Intent(this, DbManagementActivity.class);
+                Intent dbIntent = new Intent(this, ResponsableActivity.class);
                 startActivity(dbIntent);
                 return true;
             case R.id.action_blacklist:

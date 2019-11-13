@@ -437,6 +437,11 @@ public class BFH16DeviceSupport extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public void onTestNewFunction() {
 
         showNotification((byte)0xFF, "", "");

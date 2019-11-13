@@ -3,7 +3,7 @@
     <string name="app_name">Aura</string>
     <string name="title_activity_controlcenter">Aura</string>
     <string name="action_settings">Ajustes</string>
-    <string name="action_debug">Depuración</string>
+    <string name="action_debug">Historial</string>
     <string name="action_quit">Salir</string>
     <string name="action_donate">Hacer donación</string>
     <string name="controlcenter_fetch_activity_data">Sincronizar</string>
@@ -349,7 +349,7 @@
     <string name="live_activity_heart_rate">Ritmo cardíaco</string>
     <string name="pref_title_pebble_health_store_raw">Almacenar datos en bruto en la base de datos </string>
     <string name="pref_summary_pebble_health_store_raw">Una vez seleccionado, los datos archivados se guardan en bruto y están disponibles para ser interpretados más tarde. Nota: ¡La base de datos será más grande!</string>
-    <string name="action_db_management">Administración de bases de datos</string>
+    <string name="action_db_management">Asignar Responsable</string>
     <string name="title_activity_db_management">Administración de bases de datos</string>
     <string name="activity_db_management_import_export_explanation">La base de datos usa la siguiente ubicación en su dispositivo.\nEsta ubicación está accesible para otras aplicaciones Android y para su ordenador.\nEncontrará sus bases de datos exportadas (o la que quiere importar) aquí:</string>
     <string name="activity_db_management_merge_old_title">Borrar la base de datos antigua</string>

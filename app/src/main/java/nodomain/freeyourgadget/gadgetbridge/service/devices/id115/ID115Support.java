@@ -264,6 +264,11 @@ public class ID115Support extends AbstractBTLEDeviceSupport {
 
     }
 
+    @Override
+    public void handleButtonEventNew() {
+
+    }
+
     private void setInitialized(TransactionBuilder builder) {
         builder.add(new SetDeviceStateAction(getDevice(), GBDevice.State.INITIALIZED, getContext()));
     }

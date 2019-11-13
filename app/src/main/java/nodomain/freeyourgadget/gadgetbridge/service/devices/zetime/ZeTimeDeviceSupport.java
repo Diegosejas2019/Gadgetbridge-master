@@ -650,6 +650,11 @@ public class ZeTimeDeviceSupport extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public void onAppReorder(UUID[] uuids) {
 
     }

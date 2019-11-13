@@ -390,6 +390,11 @@ public class No1F1Support extends AbstractBTLEDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public boolean useAutoConnect() {
         return true;
     }

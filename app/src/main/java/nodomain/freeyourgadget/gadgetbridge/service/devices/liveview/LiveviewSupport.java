@@ -127,6 +127,11 @@ public class LiveviewSupport extends AbstractSerialDeviceSupport {
     }
 
     @Override
+    public void handleButtonEventNew() {
+
+    }
+
+    @Override
     public void onReadConfiguration(String config) {
 
     }

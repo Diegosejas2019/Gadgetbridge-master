@@ -256,4 +256,9 @@ public class PebbleSupport extends AbstractSerialDeviceSupport {
             super.onSendWeather(weatherSpec);
         }
     }
+
+    @Override
+    public void handleButtonEventNew() {
+
+    }
 }

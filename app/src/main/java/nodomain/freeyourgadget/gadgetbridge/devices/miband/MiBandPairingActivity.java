@@ -147,11 +147,11 @@ public class MiBandPairingActivity extends AbstractGBActivity {
             }
         }
 
-        /*if (!MiBandCoordinator.hasValidUserInfo()) {
+        if (!MiBandCoordinator.hasValidUserInfo()) {
             Intent userSettingsIntent = new Intent(this, MiBandPreferencesActivity.class);
             startActivityForResult(userSettingsIntent, REQ_CODE_USER_SETTINGS, null);
             return;
-        }*/
+        }
 
         // already valid user info available, use that and pair
         startPairing();

@@ -17,16 +17,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 package nodomain.freeyourgadget.gadgetbridge.activities.charts;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +52,10 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,14 +69,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import nodomain.freeyourgadget.gadgetbridge.GBApplication;
+import nodomain.freeyourgadget.gadgetbridge.JSONParser;
 import nodomain.freeyourgadget.gadgetbridge.R;
+import nodomain.freeyourgadget.gadgetbridge.activities.ControlCenterv2;
 import nodomain.freeyourgadget.gadgetbridge.activities.HeartRateUtils;
+import nodomain.freeyourgadget.gadgetbridge.activities.LoginActivity;
 import nodomain.freeyourgadget.gadgetbridge.database.DBHandler;
 import nodomain.freeyourgadget.gadgetbridge.impl.GBDevice;
 import nodomain.freeyourgadget.gadgetbridge.model.ActivitySample;
 import nodomain.freeyourgadget.gadgetbridge.model.ActivityUser;
 import nodomain.freeyourgadget.gadgetbridge.model.DeviceService;
+import nodomain.freeyourgadget.gadgetbridge.service.SharedPreference;
 import nodomain.freeyourgadget.gadgetbridge.util.GB;
+
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
 public class LiveActivityFragment extends AbstractChartFragment {
     private static final Logger LOG = LoggerFactory.getLogger(LiveActivityFragment.class);
@@ -89,6 +108,15 @@ public class LiveActivityFragment extends AbstractChartFragment {
     private int mHeartRate;
     private int mMaxHeartRate = 0;
     private TimestampTranslation tsTranslation;
+    JSONParser jParser = new JSONParser();
+    private static String url_Servicio = "http://jmartingimenez-001-site1.itempurl.com/api/";
+    //private static String url_test = "http://10.0.2.2/api/login/";
+    private ProgressDialog pDialog;
+    private String IDuser;
+
+    private EditText mEmailView;
+    private EditText mPasswordView;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     private class Steps {
         private int steps;
@@ -171,20 +199,18 @@ public class LiveActivityFragment extends AbstractChartFragment {
     private void addSample(ActivitySample sample) {
         int heartRate = sample.getHeartRate();
         if (heartRate > 60) {
-            Toast.makeText(getContext(), "Pulsación: " + String.valueOf(heartRate), Toast.LENGTH_SHORT).show();
+
             try {
-                GMailSender sender = new GMailSender("mauriciotomeapp@gmail.com",
-                        "mauricioapp");
-                sender.sendMail("Nueva solicitud de presupuesto",
-                        "Detalle: \n " +
-                                "\n Empresa :" + "\n Solicitado por: "  +
-                                "\n Email :" + "\n Telefono : " +
-                                "\n Descripcion :" ,
-                        "mauriciotomeapp@gmail.com",
-                        "diego.gustavo.sejas2013@gmail.com, ozzydiego@hotmail.com");
-                // Toast.makeText(getApplicationContext(),"envio",Toast.LENGTH_LONG).show();
+                SharedPreferences prefs = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                Integer IdUser = prefs.getInt("IdUser", 0);
+                if (IdUser != 0) {
+                    if (isConnectedToInternet()){
+                        new enviarAlerta(IdUser, 1).execute();
+                    }
+                }
+
             } catch (Exception e) {
-                Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
         int timestamp = tsTranslation.shorten(sample.getTimestamp());
@@ -195,6 +221,78 @@ public class LiveActivityFragment extends AbstractChartFragment {
         if (steps > 0) {
             addEntries(steps, timestamp);
         }
+    }
+
+    public class enviarAlerta extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        private final Integer mIdUser;
+        private final Integer mTipo;
+
+        enviarAlerta(Integer idUser, Integer tipo) {
+            mIdUser = idUser;
+            mTipo = tipo;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("pacienteId", mIdUser.toString()));
+            nameValuePairs.add(new BasicNameValuePair("tipo", mTipo.toString()));
+
+            String Resultado="";
+            JSONObject json = jParser.makeHttpRequest(url_Servicio + "MandarAlerta", "POST", nameValuePairs);
+
+            Log.d("All Products: ", json.toString());
+            try {
+                if(json != null){
+                    String success = json.getString("msg");
+                    if (success.equals("ok")){
+                        flag = true;}
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if(pDialog != null && pDialog.isShowing())
+            {
+                pDialog.dismiss();
+            }
+
+            if (success) {
+                Toast.makeText(getContext(),"Alerta enviada",Toast.LENGTH_LONG).show();
+            } else {
+                mPasswordView.setError("Contraseña incorrecta");
+                mPasswordView.requestFocus();
+            }
+        }
+    }
+
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+        }
+        return false;
     }
 
     private int translateTimestampFrom(Intent intent) {
@@ -400,7 +498,7 @@ public class LiveActivityFragment extends AbstractChartFragment {
 
     @Override
     protected void onMadeInvisibleInActivity() {
-        enableRealtimeTracking(false);
+        //enableRealtimeTracking(false);
         super.onMadeInvisibleInActivity();
     }
 

@@ -466,6 +466,11 @@ public class TeclastH30Support extends AbstractBTLEDeviceSupport {
 
     }
 
+    @Override
+    public void handleButtonEventNew() {
+
+    }
+
     private byte[] commandWithChecksum(byte cmd, int argSlot1, int argSlot2)
     {
         ByteBuffer buf = ByteBuffer.allocate(10);

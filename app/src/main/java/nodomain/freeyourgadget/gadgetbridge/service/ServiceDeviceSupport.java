@@ -404,4 +404,9 @@ public class ServiceDeviceSupport implements DeviceSupport {
         }
         delegate.onSetLedColor(color);
     }
+
+    @Override
+    public void handleButtonEventNew() {
+
+    }
 }

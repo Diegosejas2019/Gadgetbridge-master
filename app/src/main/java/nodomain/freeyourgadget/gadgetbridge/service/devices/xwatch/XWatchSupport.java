@@ -113,6 +113,7 @@ public class XWatchSupport extends AbstractBTLEDeviceSupport {
         builder.add(new SetDeviceStateAction(getDevice(), State.INITIALIZED, getContext()));
     }
 
+
     @Override
     public boolean useAutoConnect() {
         return true;
@@ -385,6 +386,11 @@ public class XWatchSupport extends AbstractBTLEDeviceSupport {
     @Override
     public void onSendWeather(WeatherSpec weatherSpec) {
         //Not supported
+    }
+
+    @Override
+    public void handleButtonEventNew() {
+
     }
 
     private void handleSummarizedData(byte[] value) {

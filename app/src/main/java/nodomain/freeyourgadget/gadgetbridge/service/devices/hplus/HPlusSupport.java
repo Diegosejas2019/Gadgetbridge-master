@@ -658,6 +658,11 @@ public class HPlusSupport extends AbstractBTLEDeviceSupport {
 
     }
 
+    @Override
+    public void handleButtonEventNew() {
+
+    }
+
     public void setUnicodeSupport(boolean support){
         HPlusCoordinator.setUnicodeSupport(gbDevice.getAddress(), support);
     }

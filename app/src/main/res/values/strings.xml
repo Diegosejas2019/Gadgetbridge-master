@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <plurals name="widget_alarm_target_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="two">%d hours</item>
+        <item quantity="few">%d hours</item>
+        <item quantity="many">%d hours</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
     <string name="app_name">Aura</string>
     <string name="title_activity_controlcenter">Aura</string>
     <string name="action_settings">Settings</string>
@@ -22,12 +29,12 @@
     <string name="controlcenter_snackbar_disconnecting">Disconnecting</string>
     <string name="controlcenter_snackbar_connecting">Connecting…</string>
     <string name="controlcenter_snackbar_requested_screenshot">Taking a screenshot of the device</string>
-    <string name="controlcenter_calibrate_device">Calibrate Device</string>
     <!-- Strings related to Debug Activity -->
+    <string name="controlcenter_calibrate_device">Calibrate Device</string>
     <string name="title_activity_debug">Debug</string>
     <string name="debugactivity_really_factoryreset_title">Really factory reset?</string>
-    <string name="debugactivity_really_factoryreset">Doing a factory reset will delete all data from the connected device (if supported). Xiaomi/Huami devices also change Bluetooth MAC address, so they appear as a new devices to Gadgetbrige.</string>
     <!-- Strings related to AppManager -->
+    <string name="debugactivity_really_factoryreset">Doing a factory reset will delete all data from the connected device (if supported). Xiaomi/Huami devices also change Bluetooth MAC address, so they appear as a new devices to Gadgetbrige.</string>
     <string name="title_activity_appmanager">App Manager</string>
     <string name="appmanager_cached_watchapps_watchfaces">Apps in cache</string>
     <string name="appmanager_installed_watchapps">Installed apps</string>
@@ -44,14 +51,14 @@
     <string name="appmanager_weather_deactivate">Deactivate System Weather app</string>
     <string name="appmanager_weather_install_provider">Install the Weather Notification app</string>
     <string name="app_configure">Configure</string>
-    <string name="app_move_to_top">Move to top</string>
     <!-- Strings related to AppBlacklist -->
+    <string name="app_move_to_top">Move to top</string>
     <string name="title_activity_appblacklist">Notification blacklist</string>
     <string name="blacklist_all_for_notifications">Blacklist all for notifications</string>
-    <string name="whitelist_all_for_notifications">Whitelist all for notifications</string>
     <!-- Strings related to CalBlacklist -->
-    <string name="title_activity_calblacklist">Blacklisted Calendars</string>
+    <string name="whitelist_all_for_notifications">Whitelist all for notifications</string>
     <!-- Strings related to FwAppInstaller -->
+    <string name="title_activity_calblacklist">Blacklisted Calendars</string>
     <string name="title_activity_fw_app_insaller">FW/App installer</string>
     <string name="fw_upgrade_notice">You are about to install the %s.</string>
     <string name="fw_upgrade_notice_amazfitbip">You are about to install the %s firmware on your Amazfit Bip.\n\nPlease make sure to install the .fw file, then the .res file, and finally the .gps file. Your watch will reboot after installing the .fw file.\n\nNote: You do not have to install .res and .gps if these files are exactly the same as the ones previously installed.\n\nPROCEED AT YOUR OWN RISK!</string>
@@ -70,8 +77,8 @@
     <string name="fw_multi_upgrade_notice">You are about to install the %1$s and %2$s firmware, instead of the ones currently on your Mi Band.</string>
     <string name="miband_firmware_known">This firmware has been tested and is known to be compatible with Gadgetbridge.</string>
     <string name="miband_firmware_unknown_warning">"This firmware is untested and may not be compatible with Gadgetbridge.\n\nYou are DISCOURAGED from flashing it!"</string>
-    <string name="miband_firmware_suggest_whitelist">If you still want to proceed and things continue to work properly afterwards, please tell the Gadgetbridge developers to whitelist the %s firmware version.</string>
     <!-- Strings related to Settings -->
+    <string name="miband_firmware_suggest_whitelist">If you still want to proceed and things continue to work properly afterwards, please tell the Gadgetbridge developers to whitelist the %s firmware version.</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General settings</string>
     <string name="pref_title_general_autoconnectonbluetooth">Connect to Gadgetbridge device when Bluetooth is turned on</string>
@@ -179,17 +186,17 @@
     <string name="pref_summary_use_custom_font">Enable this if your device has a custom font firmware for emoji support</string>
     <string name="pref_display_add_device_fab">Connect new device button</string>
     <string name="pref_display_add_device_fab_on">Always visible</string>
-    <string name="pref_display_add_device_fab_off">Visible only if no device is added</string>
     <!-- HPlus Preferences -->
+    <string name="pref_display_add_device_fab_off">Visible only if no device is added</string>
     <string name="pref_title_unit_system">Units</string>
     <string name="pref_title_timeformat">Time format</string>
     <string name="pref_title_screentime">Screen on duration</string>
     <string name="prefs_title_all_day_heart_rate">All day heart rate measurement</string>
-    <string name="preferences_hplus_settings">HPlus/Makibes settings</string>
     <!-- ID115 Preferences -->
+    <string name="preferences_hplus_settings">HPlus/Makibes settings</string>
     <string name="preferences_id115_settings">ID115 settings</string>
-    <string name="prefs_screen_orientation">Screen orientation</string>
     <!-- ZeTime Preferences -->
+    <string name="prefs_screen_orientation">Screen orientation</string>
     <string name="zetime_title_settings">ZeTime settings</string>
     <string name="zetime_title_heartrate">Heart rate settings</string>
     <string name="zetime_title_screentime">Screen on duration in seconds</string>
@@ -232,21 +239,21 @@
     <string name="zetime_signaling_vibrate_twice">Vibrate twice</string>
     <string name="zetime_signaling_beep_once">Beep once</string>
     <string name="zetime_signaling_beep_twice">Beep twice</string>
-    <string name="zetime_signaling_vibrate_beep_once">Vibrate and beep once</string>
     <!-- Device specific settings -->
+    <string name="zetime_signaling_vibrate_beep_once">Vibrate and beep once</string>
     <string name="title_activity_device_specific_settings">Device specific settings</string>
     <string name="pref_title_authkey">Auth Key</string>
     <string name="pref_summary_authkey">Change the auth key to a common key on all your Android devices from which you would like to connect from. The previous default key for all devices is 0123456789@ABCDE</string>
     <string name="prefs_hr_alarm_activity">Heart rate alarm during sports activity</string>
     <string name="prefs_hr_alarm_low">Low limit</string>
-    <string name="prefs_hr_alarm_high">High limit</string>
     <!-- Auto export preferences -->
+    <string name="prefs_hr_alarm_high">High limit</string>
     <string name="pref_header_auto_export">Auto export</string>
     <string name="pref_title_auto_export_enabled">Auto export enabled</string>
     <string name="pref_title_auto_export_location">Export location</string>
     <string name="pref_title_auto_export_interval">Export interval</string>
-    <string name="pref_summary_auto_export_interval">Export every %d hour</string>
     <!-- Auto fetch activity preferences -->
+    <string name="pref_summary_auto_export_interval">Export every %d hour</string>
     <string name="pref_auto_fetch">Auto fetch activity data</string>
     <string name="pref_auto_fetch_summary">Fetch happens upon screen unlock. Only works if a lock mechanism is set!</string>
     <string name="pref_auto_fetch_limit_fetches">Minimum time between fetches</string>
@@ -293,8 +300,8 @@
     <string name="preferences_miband_settings">Mi Band / Amazfit settings</string>
     <string name="preferences_miband2_settings">Mi Band 2 settings</string>
     <string name="preferences_miband3_settings">Mi Band 3 settings</string>
-    <string name="preferences_amazfitbip_settings">Amazfit Bip settings</string>
-    <string name="preferences_amazfitcor_settings">Amazfit Cor settings</string>s
+    <string name="preferences_amazfitbip_settings">Amazfit Bip settings</string>s
+    <string name="preferences_amazfitcor_settings">Amazfit Cor settings</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
@@ -515,8 +522,8 @@
     <string name="activity_prefs_year_birth">Year of birth</string>
     <string name="activity_prefs_gender">Gender</string>
     <string name="activity_prefs_height_cm">Height in cm</string>
-    <string name="activity_prefs_weight_kg">Weight in kg</string>
     <!-- Settings - Charts Preferences -->
+    <string name="activity_prefs_weight_kg">Weight in kg</string>
     <string name="pref_header_charts">Charts Settings</string>
     <string name="pref_title_charts_swipe">Enable left/right swipe in the charts activity</string>
     <string name="pref_title_charts_average">Show averages in the charts</string>
@@ -579,10 +586,10 @@
     <string name="activity_db_management_empty_db_warning">Warning! By pushing this button you will wipe your database and start from scratch.</string>
     <string name="Cancel">Cancel</string>
     <string name="Delete">Delete</string>
-    <string name="ok">OK</string>
     <!-- Strings related to Vibration Activity -->
-    <string name="title_activity_vibration">Vibration</string>
+    <string name="ok">OK</string>
     <!-- Strings related to Pebble Pairing Activity-->
+    <string name="title_activity_vibration">Vibration</string>
     <string name="title_activity_pebble_pairing">Pebble pairing</string>
     <string name="pebble_pairing_hint">A pairing dialog will pop up on your Android device. If not, look in the notification drawer and accept the pairing request. Also accept it on your Pebble afterwards.</string>
     <string name="weather_notification_label">Make sure that this skin is enabled in the Weather Notification app to get weather information on your Pebble.\n\nNo configuration is needed here.\n\nYou can enable the system weather app of your Pebble from the app management.\n\nSupported watchfaces will show the weather automatically.</string>
@@ -614,8 +621,8 @@
     <string name="discovery_pair_title">Pair with %1$s?</string>
     <string name="discovery_pair_question">Select Pair to pair your devices. If this fails, try again without pairing.</string>
     <string name="discovery_yes_pair">Pair</string>
-    <string name="discovery_dont_pair">Don\'t Pair</string>
     <!-- strings sent to pebble watches for quick actions -->
+    <string name="discovery_dont_pair">Don\'t Pair</string>
     <string name="_pebble_watch_open_on_phone">Open on Android device</string>
     <string name="_pebble_watch_mute">Mute</string>
     <string name="_pebble_watch_reply">Reply</string>
@@ -673,8 +680,8 @@
     <string name="devicetype_bfh16">BFH-16</string>
     <string name="devicetype_mijia_lywsd02">Mijia Smart Clock</string>
     <string name="choose_auto_export_location">Choose export location</string>
-    <string name="notification_channel_name">Gadgetbridge notifications</string>
     <!-- Menus on the smart device -->
+    <string name="notification_channel_name">Gadgetbridge notifications</string>
     <string name="menuitem_shortcut_alipay">Alipay (Shortcut)</string>
     <string name="menuitem_shortcut_weather">Weather (Shortcut)</string>
     <string name="menuitem_status">Status</string>
@@ -702,15 +709,15 @@
     <string name="share_log">Share log</string>
     <string name="share_log_warning">Please keep in mind Gadgetbridge logs files that may contain lots of personal info, including but not limited to health data, unique identifiers (such as a device\'s MAC address), music preferences, etc. Consider editing the file and removing this info before sending the file to a public issue report.</string>
     <string name="warning">Warning!</string>
-    <string name="no_data">No data</string>
     <!-- LED Color -->
-    <string name="preferences_led_color">LED Color</string>
+    <string name="no_data">No data</string>
     <!-- FM transmitters -->
+    <string name="preferences_led_color">LED Color</string>
     <string name="preferences_fm_frequency">FM Frequency</string>
     <string name="pref_invalid_frequency_title">Invalid frequency</string>
     <string name="pref_invalid_frequency_message">Please enter a frequency between 87.5 and 108.0</string>
-    <string name="language_and_region_prefs">Language and region settings</string>
     <!--Notification Filter Black-/ Whitelist-->
+    <string name="language_and_region_prefs">Language and region settings</string>
     <string name="title_activity_notification_filter">Notification Filter</string>
     <string name="toast_app_must_not_be_blacklisted">App must not be blacklisted to be configured</string>
     <string name="edittext_notification_filter_words_hint">Enter desired words, new line for each</string>
@@ -723,8 +730,8 @@
     <string name="toast_notification_filter_words_empty_hint">Please enter at least one word</string>
     <string name="filter_mode">Filter Mode</string>
     <string name="mode_configuration">Mode Configuration</string>
-    <string name="save_configuration">Save Configuration</string>
     <!-- App Widgets-->
+    <string name="save_configuration">Save Configuration</string>
     <string name="appwidget_not_connected">Not connected, alarm not set.</string>
     <string name="appwidget_text">Zzz</string>
     <string name="add_widget">Add widget</string>
@@ -739,11 +746,4 @@
     <string name="widget_20_minutes">20 minutes</string>
     <string name="widget_1_hour">1 hour</string>
     <string name="icon_placeholder" translatable="false">Icon</string>
-    <plurals name="widget_alarm_target_hours">
-        <item quantity="one">%d hour</item>
-        <item quantity="two">%d hours</item>
-        <item quantity="few">%d hours</item>
-        <item quantity="many">%d hours</item>
-        <item quantity="other">%d hours</item>
-    </plurals>
 </resources>

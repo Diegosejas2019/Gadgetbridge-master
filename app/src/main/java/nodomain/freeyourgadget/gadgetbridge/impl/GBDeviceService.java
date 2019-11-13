@@ -76,7 +76,7 @@ public class GBDeviceService implements DeviceService {
         return new Intent(mContext, mServiceClass);
     }
 
-    protected void invokeService(Intent intent) {
+    protected void  invokeService(Intent intent) {
         if (LanguageUtils.transliterate()) {
             for (String extra : transliterationExtras) {
                 if (intent.hasExtra(extra)) {
@@ -335,6 +335,13 @@ public class GBDeviceService implements DeviceService {
     public void onEnableHeartRateSleepSupport(boolean enable) {
         Intent intent = createIntent().setAction(ACTION_ENABLE_HEARTRATE_SLEEP_SUPPORT)
                 .putExtra(EXTRA_BOOLEAN_ENABLE, enable);
+        invokeService(intent);
+    }
+
+    @Override
+    public void handleButtonEventNew() {
+        Intent intent = createIntent().setAction(ACTION_TEST_NEW_FUNCTION)
+                .putExtra(EXTRA_BOOLEAN_ENABLE, true);
         invokeService(intent);
     }
 

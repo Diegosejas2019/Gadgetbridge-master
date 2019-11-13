@@ -309,4 +309,9 @@ public class MiScale2DeviceSupport extends AbstractBTLEDeviceSupport {
     public void onSendWeather(WeatherSpec weatherSpec) {
 
     }
+
+    @Override
+    public void handleButtonEventNew() {
+
+    }
 }
