@@ -1,6 +1,9 @@
 package nodomain.freeyourgadget.gadgetbridge.activities;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import nodomain.freeyourgadget.gadgetbridge.R;
 
 import android.app.ProgressDialog;
@@ -14,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -21,18 +26,31 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 public class ResponsableActivity extends AppCompatActivity {
 
+    private static final String TAG = "algo";
     Menu menu;
     private String currentUrl;
     public static final String MY_PREFS_NAME = "FCMSharedPref";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_responsable);
+        clearCache(ResponsableActivity.this ,1);
+/*        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.controlcenter_navigation_drawer_open, R.string.controlcenter_navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();*/
         try {
             CargarWebView("http://jmartingimenez-001-site1.itempurl.com/Panel/Personas");
         } catch (UnsupportedEncodingException e) {
@@ -52,6 +70,11 @@ public class ResponsableActivity extends AppCompatActivity {
         myWebView.getSettings().setLoadWithOverviewMode(true);
         myWebView.getSettings().setUseWideViewPort(true);
         myWebView.getSettings().setBuiltInZoomControls(true);
+        myWebView.clearHistory();
+
+        myWebView.clearCache(true);
+        myWebView.clearFormData();
+
         myWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         myWebView.setWebChromeClient(new WebChromeClient() {
                                          @Override
@@ -63,6 +86,8 @@ public class ResponsableActivity extends AppCompatActivity {
                                              newWebView.getSettings().setBuiltInZoomControls(true);
                                              newWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
                                              newWebView.getSettings().setSupportMultipleWindows(true);
+                                             newWebView.getSettings().setAppCacheEnabled(false);
+
                                              view.addView(newWebView);
                                              WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
                                              transport.setWebView(newWebView);
@@ -116,14 +141,52 @@ public class ResponsableActivity extends AppCompatActivity {
 
             SharedPreferences prefs = ResponsableActivity.this.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             String token = prefs.getString("tagtoken", null);
-            String postData = "token=" + URLEncoder.encode(token, "UTF-8");
+            String postData = "?token=" + token;
             //webview.postUrl(url,postData.getBytes());
 
-            myWebView.postUrl(url,postData.getBytes());
+            myWebView.loadUrl(url + postData);
         }
         else {
             Toast.makeText(ResponsableActivity.this,"Conexión Perdida",Toast.LENGTH_LONG).show();
         }
+    }
+
+    static int clearCacheFolder(final File dir, final int numDays) {
+
+        int deletedFiles = 0;
+        if (dir!= null && dir.isDirectory()) {
+            try {
+                for (File child:dir.listFiles()) {
+
+                    //first delete subdirectories recursively
+                    if (child.isDirectory()) {
+                        deletedFiles += clearCacheFolder(child, numDays);
+                    }
+
+                    //then delete the files and subdirectories in this dir
+                    //only empty directories can be deleted, so subdirs have been done first
+                    if (child.lastModified() < new Date().getTime() - numDays * DateUtils.DAY_IN_MILLIS) {
+                        if (child.delete()) {
+                            deletedFiles++;
+                        }
+                    }
+                }
+            }
+            catch(Exception e) {
+                Log.e(TAG, String.format("Failed to clean the cache, error %s", e.getMessage()));
+            }
+        }
+        return deletedFiles;
+    }
+
+    /*
+     * Delete the files older than numDays days from the application cache
+     * 0 means all files.
+     */
+    public static void clearCache(final Context context, final int numDays) {
+        Log.i(TAG, String.format("Starting cache prune, deleting files older than %d days", numDays));
+        int numDeletedFiles = clearCacheFolder(context.getCacheDir(), numDays);
+        Log.i(TAG, String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
     }
 
     public boolean isConnectedToInternet(){

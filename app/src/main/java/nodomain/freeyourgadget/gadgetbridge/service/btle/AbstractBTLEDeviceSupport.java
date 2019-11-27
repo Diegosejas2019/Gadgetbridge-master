@@ -69,6 +69,10 @@ public abstract class AbstractBTLEDeviceSupport extends AbstractDeviceSupport im
         }
     }
 
+    public AbstractBTLEDeviceSupport() {
+
+    }
+
     @Override
     public boolean connect() {
         if (mQueue == null) {

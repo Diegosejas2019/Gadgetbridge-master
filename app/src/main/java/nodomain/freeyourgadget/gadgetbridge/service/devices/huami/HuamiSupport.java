@@ -182,6 +182,7 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
 
     public HuamiSupport(Logger logger) {
         super(logger);
+
         addSupportedService(GattService.UUID_SERVICE_GENERIC_ACCESS);
         addSupportedService(GattService.UUID_SERVICE_GENERIC_ATTRIBUTE);
         addSupportedService(GattService.UUID_SERVICE_HEART_RATE);
@@ -1006,6 +1007,7 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
     }
 
     private void handleDeviceEvent(byte[] value) {
+
         if (value == null || value.length == 0) {
             return;
         }
@@ -1024,7 +1026,7 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
                 break;
             case HuamiDeviceEvent.BUTTON_PRESSED:
                 LOG.info("button pressed");
-                handleButtonEvent();
+                //handleButtonEvent();
                 break;
             case HuamiDeviceEvent.BUTTON_PRESSED_LONG:
                 LOG.info("button long-pressed ");
@@ -1112,11 +1114,11 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
         }
     }
 
-    public void handleButtonEvent() {
+    public HuamiSupport handleButtonEvent(TransactionBuilder builder) {
         ///logMessageContent(value);
 
         // If disabled we return from function immediately
-        Prefs prefs = GBApplication.getPrefs();
+/*        Prefs prefs = GBApplication.getPrefs();
         if (!prefs.getBoolean(MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE, false)) {
             return;
         }
@@ -1157,7 +1159,16 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
                 currentButtonActionId++;
                 currentButtonPressCount = 0;
             }
+        }*/
+
+        boolean enable = HuamiCoordinator.getGoalNotification();
+        LOG.info("Setting goal notification to " + enable);
+        if (enable) {
+            builder.write(getCharacteristic(HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT_2), HuamiService.COMMAND_SET_COMMAND_BUTTON);
+        } else {
+            builder.write(getCharacteristic(HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT_2), HuamiService.COMMAND_SET_COMMAND_BUTTON);
         }
+        return this;
     }
 
     @Override
@@ -1214,7 +1225,6 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
                                            BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
 
-
         UUID characteristicUUID = characteristic.getUuid();
         if (HuamiService.UUID_CHARACTERISTIC_6_BATTERY_INFO.equals(characteristicUUID)) {
             handleBatteryInfo(characteristic.getValue(), BluetoothGatt.GATT_SUCCESS);
@@ -1231,6 +1241,9 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
             return true;
         } else if (HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT.equals(characteristicUUID)) {
             handleDeviceEvent(characteristic.getValue());
+            return true;
+        } else if (HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT_2.equals(characteristicUUID)) {
+            GB.toast(getContext(), "test" , Toast.LENGTH_LONG, GB.INFO);
             return true;
         } else if (HuamiService.UUID_CHARACTERISTIC_7_REALTIME_STEPS.equals(characteristicUUID)) {
             handleRealtimeSteps(characteristic.getValue());
@@ -1263,6 +1276,9 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
             return true;
         } else if (HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT.equals(characteristicUUID)) {
             handleDeviceEvent(characteristic.getValue());
+            return true;
+        } else if (HuamiService.UUID_CHARACTERISTIC_DEVICEEVENT_2.equals(characteristicUUID)) {
+            GB.toast(getContext(), "test" , Toast.LENGTH_LONG, GB.INFO);
             return true;
         } else {
             LOG.info("Unhandled characteristic read: " + characteristicUUID);
@@ -1562,7 +1578,7 @@ public class HuamiSupport extends AbstractBTLEDeviceSupport {
                     setExposeHRThridParty(builder);
                     break;
                 case MiBandConst.PREF_MIBAND_BUTTON_ACTION_ENABLE:
-                    handleButtonEvent();
+                    handleButtonEvent(builder);
                     break;
             }
             builder.queue(getQueue());

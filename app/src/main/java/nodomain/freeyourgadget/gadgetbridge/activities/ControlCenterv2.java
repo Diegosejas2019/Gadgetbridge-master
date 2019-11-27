@@ -63,6 +63,8 @@ import nodomain.freeyourgadget.gadgetbridge.util.AndroidUtils;
 import nodomain.freeyourgadget.gadgetbridge.util.GB;
 import nodomain.freeyourgadget.gadgetbridge.util.Prefs;
 
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+
 //TODO: extend AbstractGBActivity, but it requires actionbar that is not available
 public class ControlCenterv2 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GBActivity {
@@ -262,9 +264,27 @@ public class ControlCenterv2 extends AppCompatActivity
                 startActivityForResult(settingsIntent, MENU_REFRESH_CODE);
                 return true;
             case R.id.action_debug:
-                Intent debugIntent = new Intent(this, DebugActivity.class);
+                Intent debugIntent = new Intent(this, HistorialActivity.class);
+                debugIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                debugIntent.putExtra("key", "Panel/Historial"); //Optional parameters
+
                 startActivity(debugIntent);
                 return true;
+            case R.id.mi_cuenta:
+                Intent miCuentaIntent = new Intent(this, HistorialActivity.class);
+                miCuentaIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                miCuentaIntent.putExtra("key", "Panel/MiCuenta"); //Optional parameters
+
+                startActivity(miCuentaIntent);
+                return true;
+            /*case R.id.conexiones:
+                Intent conexionesIntent = new Intent(this, HistorialActivity.class);
+                conexionesIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                conexionesIntent.putExtra("key", "Panel/Conexiones"); //Optional parameters
+
+                startActivity(conexionesIntent);
+                return true;*/
+
             case R.id.action_db_management:
                 Intent dbIntent = new Intent(this, ResponsableActivity.class);
                 startActivity(dbIntent);

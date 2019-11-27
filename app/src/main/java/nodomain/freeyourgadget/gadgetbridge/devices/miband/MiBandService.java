@@ -188,6 +188,8 @@ public class MiBandService {
 
     public static final byte COMMAND_GET_SENSOR_DATA = 0x12;
 
+
+
     /* FURTHER COMMANDS: unchecked therefore left commented
 
 

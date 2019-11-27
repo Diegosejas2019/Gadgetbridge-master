@@ -118,6 +118,7 @@ public class GBAlarmListAdapter extends RecyclerView.Adapter<GBAlarmListAdapter.
         TextView alarmTime;
         Switch isEnabled;
         TextView isSmartWakeup;
+        TextView medicamento;
 
         CheckedTextView alarmDayMonday;
         CheckedTextView alarmDayTuesday;
@@ -135,6 +136,7 @@ public class GBAlarmListAdapter extends RecyclerView.Adapter<GBAlarmListAdapter.
             alarmTime = view.findViewById(R.id.alarm_item_time);
             isEnabled = view.findViewById(R.id.alarm_item_toggle);
             isSmartWakeup = view.findViewById(R.id.alarm_smart_wakeup);
+            medicamento = view.findViewById(R.id.alarm_medicamento);
 
             alarmDayMonday = view.findViewById(R.id.alarm_item_monday);
             alarmDayTuesday = view.findViewById(R.id.alarm_item_tuesday);

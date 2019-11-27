@@ -222,7 +222,7 @@ public class GBDeviceAdapterv2 extends RecyclerView.Adapter<GBDeviceAdapterv2.Vi
                                                         startIntent = new Intent(context, ConfigureAlarms.class);
                                                         startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
                                                         context.startActivity(startIntent);
-                                                    }
+                                                        }
                                                 }
         );
 
@@ -440,7 +440,7 @@ public class GBDeviceAdapterv2 extends RecyclerView.Adapter<GBDeviceAdapterv2.Vi
             public void onClick(View v) {
                 new AlertDialog.Builder(context)
                         .setCancelable(true)
-                        .setTitle(context.getString(R.string.controlcenter_delete_device_name, device.getName()))
+                        //.setTitle(context.getString(R.string.controlcenter_delete_device_name, device.getName()))
                         .setMessage(R.string.controlcenter_delete_device_dialogmessage)
                         .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
                             @Override

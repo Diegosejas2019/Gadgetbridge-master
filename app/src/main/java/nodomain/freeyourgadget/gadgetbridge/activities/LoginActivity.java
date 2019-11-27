@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String restoredText = prefs.getString("Email", null);
         if (restoredText != null) {
@@ -139,11 +138,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View v) {
-        String url = "https://www.mitrapharma.com/";
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
-    }
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null)
@@ -232,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //showProgressDialog("Please wait...", "Your message");
+            showProgressDialog("Por favor espere...", "Iniciando sesión");
         }
 
         private final String mEmail;

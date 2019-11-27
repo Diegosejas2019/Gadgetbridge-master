@@ -205,7 +205,7 @@ public class LiveActivityFragment extends AbstractChartFragment {
                 Integer IdUser = prefs.getInt("IdUser", 0);
                 if (IdUser != 0) {
                     if (isConnectedToInternet()){
-                        new enviarAlerta(IdUser, 1).execute();
+                        new enviarAlerta(IdUser, 1, String.valueOf(heartRate)).execute();
                     }
                 }
 
@@ -233,19 +233,22 @@ public class LiveActivityFragment extends AbstractChartFragment {
 
         private final Integer mIdUser;
         private final Integer mTipo;
+        private final String mRitmo;
 
-        enviarAlerta(Integer idUser, Integer tipo) {
+        enviarAlerta(Integer idUser, Integer tipo, String ritmo) {
             mIdUser = idUser;
             mTipo = tipo;
+            mRitmo = ritmo;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean flag = false;
 
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
             nameValuePairs.add(new BasicNameValuePair("pacienteId", mIdUser.toString()));
             nameValuePairs.add(new BasicNameValuePair("tipo", mTipo.toString()));
+            nameValuePairs.add(new BasicNameValuePair("notas", "La frecuencia cardiaca registrada fue de " + mRitmo.toString()));
 
             String Resultado="";
             JSONObject json = jParser.makeHttpRequest(url_Servicio + "MandarAlerta", "POST", nameValuePairs);

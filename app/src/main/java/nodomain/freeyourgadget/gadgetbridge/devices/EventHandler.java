@@ -95,7 +95,7 @@ public interface EventHandler {
      * The config name is device specific.
      * @param config the device specific option to set on the device
      */
-    void onSendConfiguration(String config);
+    void    onSendConfiguration(String config);
 
     /**
      * Gets the given option from the device, sets the values in the preferences.
